@@ -89,7 +89,25 @@ Stores visual output metadata generated after model inference — e.g., ROC curv
 
 ---
 
-## 6. Model_Features Join Table
+## 6. Features Table
+```sql
+CREATE TABLE `Features` (
+    `feature_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `feature_name` VARCHAR(255) NOT NULL,  -- E.g., 'Age', 'Blood Pressure'
+    `feature_description` TEXT,
+
+    PRIMARY KEY (`feature_id`)
+);
+```
+The `Features` table stores information about individual input variables used by machine learning models for cardiovascular risk prediction. This table captures metadata about features (independent variables) used in model training and inference.
+Each feature represents a variable input into one or more models, examples include:
+- Cholesterol level
+- Heart rate
+- Blood pressure
+  
+---
+
+## 7. Model_Features Join Table
 ```sql
 CREATE TABLE `Model_Features` (
     `model_id` INT(11) NOT NULL,
@@ -100,7 +118,7 @@ CREATE TABLE `Model_Features` (
     FOREIGN KEY (`feature_id`) REFERENCES `Features`(`feature_id`)
 );
 ```
-This table represents a many-to-many relationship between machine learning models and the features they use. The purpose of the Model_Features table is to associate specific features with specific machine learning models, especially because:
+This table represents a many-to-many relationship between machine learning models and the features they use. The purpose of the `Model_Features` table is to associate specific features with specific machine learning models, especially because:
 - One feature (like “age”) can be used by multiple models
 - One model (like “Lasso Cox”) can use multiple features
 
