@@ -89,6 +89,23 @@ Stores visual output metadata generated after model inference — e.g., ROC curv
 
 ---
 
+## 6. Model_Features Join Table
+```sql
+CREATE TABLE `Model_Features` (
+    `model_id` INT(11) NOT NULL,
+    `feature_id` INT(11) NOT NULL,
+
+    PRIMARY KEY (`model_id`, `feature_id`),  -- Composite primary key
+    FOREIGN KEY (`model_id`) REFERENCES `ML_Models`(`model_id`),
+    FOREIGN KEY (`feature_id`) REFERENCES `Features`(`feature_id`)
+);
+```
+This table represents a many-to-many relationship between machine learning models and the features they use. The purpose of the Model_Features table is to associate specific features with specific machine learning models, especially because:
+- One feature (like “age”) can be used by multiple models
+- One model (like “Lasso Cox”) can use multiple features
+
+So this is a classic many-to-many relationship, and Model_Features is the join/association table between ML_Models and Features.
+
 ## Notes
 - All primary keys are `AUTO_INCREMENT` integers for easy reference.
 - Timestamp fields (`prediction_date`, `generated_at`) allow for auditing model performance over time.
